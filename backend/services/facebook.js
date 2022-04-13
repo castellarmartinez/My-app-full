@@ -8,14 +8,11 @@ passport.use(
   strategyName,
   new FacebookStrategy(
     {
-      clientID: FACEBOOK_APP_ID,
-      clientSecret: FACEBOOK_APP_SECRET,
-      callbackURL: FACEBOOK_CALLBACK,
+      clientID: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+      callbackURL: process.env.FACEBOOK_CALLBACK,
+      profileFields: ['id', 'emails', 'name']
     },
-    (accessToken, refreshToken, profile, cb) => {
-      User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-        return cb(err, user);
-      });
-    }
+    (accessToken, refreshToken, profile, done) => done(null, profile)
   )
 );

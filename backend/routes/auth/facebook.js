@@ -6,7 +6,13 @@ const strategyName = "facebook";
 
 require("dotenv").config();
 
-app.get(`/auth/${strategyName}`, passport.authenticate("facebook"));
+app.get(
+  `/auth/${strategyName}`,
+  passport.authenticate(strategyName, {
+    session: false,
+    scope: ["profile", "email"],
+  })
+);
 
 app.get(
   `/auth/${strategyName}/callback`,
