@@ -1,16 +1,15 @@
 const base_url = "http://localhost:3000";
 
-let form = document.getElementById("login_form");
-form.addEventListener("submit", login_event);
+const form = document.getElementById('login_form');
 
-function login_event(e) {
+form.addEventListener("submit", (e) => {
   e.preventDefault();
 
   let message = document.getElementById("message");
   message.textContent = "";
 
   let formData = new FormData(form);
-
+   console.log(formData);
   /* Convert data into json */
   let data = Object.fromEntries(formData);
 
@@ -27,4 +26,4 @@ function login_event(e) {
       form.reset();
       message.textContent = data.message;
     });
-}
+});
