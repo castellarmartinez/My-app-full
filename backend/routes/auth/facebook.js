@@ -6,7 +6,7 @@ const strategyName = "facebook";
 
 require("dotenv").config();
 
-app.get(
+router.get(
   `/auth/${strategyName}`,
   passport.authenticate(strategyName, {
     session: false,
@@ -14,7 +14,7 @@ app.get(
   })
 );
 
-app.get(
+router.get(
   `/auth/${strategyName}/callback`,
   passport.authenticate("facebook", { failureRedirect: "/failed" }),
   (req, res) => {
@@ -29,3 +29,5 @@ app.get(
     res.redirect(301, urlFront);
   }
 );
+
+module.exports = router;
