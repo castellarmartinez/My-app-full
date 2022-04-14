@@ -10,7 +10,7 @@ router.get(
   `/auth/${strategyName}/`,
   passport.authenticate(strategyName, {
     session: false,
-    scope: ["profile", "email"],
+    scope: ["r_liteprofile", "r_emailaddress"],
   })
 );
 
