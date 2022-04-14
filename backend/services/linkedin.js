@@ -1,5 +1,5 @@
 const passport = require("passport");
-const LinkedInStrategy = require("passport-linkedin").Strategy;
+const LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
 const strategyName = "linkedin";
 
 require("dotenv").config();
@@ -8,8 +8,8 @@ passport.use(
   strategyName,
   new LinkedInStrategy(
     {
-      consumerKey: process.env.LINKEDIN_API_KEY,
-      consumerSecret: process.env.LINKEDIN_SECRET_KEY,
+      clientID: process.env.LINKEDIN_CLIENT_ID,
+      clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
       callbackURL: process.env.LINKEDIN_CALLBACK,
     },
     (accessToken, refreshToken, profile, done) => done(null, profile)
