@@ -1,5 +1,5 @@
 const passport = require("passport");
-const LinkedInStrategy = require("passport-linkedin").Strategy;
+const LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
 const strategyName = "linkedin";
 
 require("dotenv").config();
