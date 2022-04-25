@@ -12,6 +12,7 @@ app.use(express.json());
 
 app.use(require("./routes/public"));
 app.use(require("./routes/auth"));
+app.use(require("./routes/payments"));
 
 app.listen(PORT, () => {
   console.log(`App is running on PORT ${PORT}!`);
