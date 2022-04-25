@@ -8,15 +8,15 @@ mercadopago.configure({
   access_token: process.env.MERCADOPAGO_TOKEN,
 });
 
-router.post("/success", (req, res) => {
+router.get("/success", (req, res) => {
   res.send("Success");
 });
 
-router.post("/failure", (req, res) => {
+router.get("/failure", (req, res) => {
   res.send("Failure");
 });
 
-router.post("/pending", (req, res) => {
+router.get("/pending", (req, res) => {
   res.send("Pending");
 });
 
@@ -50,9 +50,9 @@ router.post("/pago", function (req, res) {
   let preference = {
     auto_return: "approved",
     back_urls: {
-      success: `${process.env.URL_FRONT}/success`, // TODO: define this
-      failure: `${process.env.URL_FRONT}/failure`, // TODO: define this
-      pending: `${process.env.URL_FRONT}/pending`, // TODO: define this
+      success: `${process.env.URL_BACK}/mercadopago/success`, // TODO: define this
+      failure: `${process.env.URL_BACK}/mercadopago/failure`, // TODO: define this
+      pending: `${process.env.URL_BACK}/mercadopago/pending`, // TODO: define this
     },
     payer: {
       name: user.name,

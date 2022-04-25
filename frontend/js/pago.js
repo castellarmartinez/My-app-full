@@ -10,7 +10,7 @@ function get_preference_id(e) {
   console.log("click");
 
   const payment_url = `${base_url}/mercadopago/pago`;
-  let MERCADOPAGO_PUBLIC_KEY = "TEST-19a131dc-b914-4f5f-843b-87384f2ae4e4";
+  let MERCADOPAGO_PUBLIC_KEY = "APP_USR-f8da28b6-a90d-431e-ba0c-79b0cfbef506";
 
   const data = { amount: 1234 };
 
@@ -50,8 +50,8 @@ function get_preference_id(e) {
     });
 }
 
-var payment_btn2 = document.getElementById("paypal_btn");
-payment_btn2.addEventListener("click", get_preference_paypal);
+// var payment_btn2 = document.getElementById("paypal_btn");
+// payment_btn2.addEventListener("click", get_preference_paypal);
 
 function get_preference_paypal(e) {
   // paso 1. Preparar el pago (ir al backend y obtener un preference_id)
