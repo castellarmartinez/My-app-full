@@ -17,3 +17,5 @@ router.get("/pruebapago", function (req, res) {
 });
 
 router.use("/mercadopago", mercadopago);
+
+module.exports = router;
