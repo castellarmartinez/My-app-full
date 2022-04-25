@@ -17,6 +17,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "express-openid-connect": "^2.7.2",
+    "mercadopago": "^1.5.12",
     "passport": "^0.5.2",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
