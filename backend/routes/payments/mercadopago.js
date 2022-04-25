@@ -8,6 +8,18 @@ mercadopago.configure({
   access_token: process.env.MERCADOPAGO_TOKEN,
 });
 
+router.post("/success", (req, res) => {
+  res.send("Success");
+});
+
+router.post("/failure", (req, res) => {
+  res.send("Failure");
+});
+
+router.post("/pending", (req, res) => {
+  res.send("Pending");
+});
+
 router.post("/pago", function (req, res) {
   console.log("New request POST to /pago");
   // TODO: protect this route with a middleware
