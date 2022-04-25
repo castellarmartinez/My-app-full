@@ -1,3 +1,5 @@
 /backend/node_modules
 /backend/package-lock.json
 /backend/.env
+backend/routes/auth/twitter.js
+backend/services/twitter.js
