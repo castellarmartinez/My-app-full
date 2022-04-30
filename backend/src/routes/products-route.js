@@ -47,19 +47,7 @@ router.post(
   adminAuthentication,
   tryRegisteredProduct,
   tryValidProduct,
-  async (req, res) => {
-    const success = await addProduct(req.body, req.params.id);
-
-    if (success) {
-      res.status(201).json({
-        message: "The product has been added.",
-      });
-    } else {
-      res.status(500).json({
-        error: "Unable to add the product.",
-      });
-    }
-  }
+  addProduct
 );
 
 /**
@@ -82,19 +70,7 @@ router.post(
  *              description: Internal error.
  */
 
-router.get("/", cacheProducts, async (req, res) => {
-  const products = await getProducts();
-
-  if (products) {
-    res.status(200).send({
-      products,
-    });
-  } else {
-    res.status(500).json({
-      error: "Could not access products.",
-    });
-  }
-});
+router.get("/", cacheProducts, getProducts);
 
 /**
  * @swagger
@@ -128,19 +104,7 @@ router.put(
   adminAuthentication,
   tryProductExist,
   tryValidProduct,
-  async (req, res) => {
-    const success = await updateProduct(req.params.id, req.body);
-
-    if (success) {
-      res.status(200).json({
-        message: "The product has been updated.",
-      });
-    } else {
-      res.status(500).json({
-        error: "Could not update the product.",
-      });
-    }
-  }
+  updateProduct
 );
 
 /**
@@ -164,24 +128,7 @@ router.put(
  *              description: You need admin privileges to perform this operation.
  */
 
-router.delete(
-  "/:id/",
-  adminAuthentication,
-  tryProductExist,
-  async (req, res) => {
-    const success = await deleteProduct(req.params.id);
-
-    if (success) {
-      res.status(200).json({
-        message: "The product has been deleted.",
-      });
-    } else {
-      res.status(500).json({
-        error: "Could not delete the product.",
-      });
-    }
-  }
-);
+router.delete("/:id/", adminAuthentication, tryProductExist, deleteProduct);
 
 /**
  * @swagger
