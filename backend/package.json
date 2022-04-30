@@ -4,7 +4,7 @@
   "description": "Last project for the Acamica's Web Development Back End",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha src/tests/*.js",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
