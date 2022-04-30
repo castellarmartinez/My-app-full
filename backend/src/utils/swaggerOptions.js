@@ -13,7 +13,7 @@ const swaggerOptions = {
     servers: [
       {
         url: config.URL_HOST,
-        description: "Local server",
+        description: 'Local server'
       },
     ],
 
