@@ -67,33 +67,7 @@ router.post(
   tryProductExist,
   tryOpenOrder,
   tryValidOrder,
-  async (req, res) => {
-    const order = {
-      products: [
-        {
-          product: req.product._id,
-          quantity: req.body.quantity,
-        },
-      ],
-      total: req.product.price * req.body.quantity,
-      address: req.address,
-      payment_method: req.payment,
-      state: req.body.state,
-      owner: req.user._id,
-    };
-
-    const success = await addOrder(order);
-
-    if (success) {
-      res.status(201).json({
-        message: "The order has been added.",
-      });
-    } else {
-      res.status(500).json({
-        error: "Unable to add order.",
-      });
-    }
-  }
+  addOrder
 );
 
 /**
@@ -119,19 +93,7 @@ router.post(
  *              description: Internal error.
  */
 
-router.get("/", adminAuthentication, async (req, res) => {
-  const orders = await getOrders();
-
-  if (orders) {
-    res.status(200).json({
-      orders_list: orders,
-    });
-  } else {
-    res.status(500).json({
-      error: "Could not access orders.",
-    });
-  }
-});
+router.get("/", adminAuthentication, getOrders);
 
 /**
  * @swagger
@@ -158,24 +120,7 @@ router.get("/", adminAuthentication, async (req, res) => {
  *              description: Internal error.
  */
 
-router.get(
-  "/history",
-  customerAuthentication,
-  tryHaveOrders,
-  async (req, res) => {
-    const ordersDetails = await getOrdersByUser(req.orders);
-
-    if (ordersDetails) {
-      res.status(200).json({
-        my_orders: ordersDetails,
-      });
-    } else {
-      res.status(500).json({
-        error: "Could not access this user's orders.",
-      });
-    }
-  }
-);
+router.get("/history", customerAuthentication, tryHaveOrders, getOrdersByUser);
 
 /**
  * @swagger
@@ -210,20 +155,7 @@ router.put(
   tryCanEditOrder,
   tryProductExist,
   tryValidAddition,
-  async (req, res) => {
-    const qtyToAdd = parseInt(req.query.quantity, 10);
-    const success = await addProductToOrder(req.product, qtyToAdd, req.order);
-
-    if (success) {
-      res.status(200).json({
-        message: "The product has been added to the order.",
-      });
-    } else {
-      res.status(500).json({
-        error: "Could not add the product.",
-      });
-    }
-  }
+  addProductToOrder
 );
 
 /**
@@ -259,24 +191,7 @@ router.put(
   tryCanEditOrder,
   tryProductExist,
   tryValidElimination,
-  async (req, res) => {
-    const qtyToRemove = parseInt(req.query.quantity, 10);
-    const success = await removeProductFromOrder(
-      req.product,
-      qtyToRemove,
-      req.order
-    );
-
-    if (success) {
-      res.status(200).json({
-        message: "The product has been deleted/reduced from the order.",
-      });
-    } else {
-      res.status(500).json({
-        error: "Could not delete/reduce the product.",
-      });
-    }
-  }
+  removeProductFromOrder
 );
 
 /**
@@ -308,19 +223,7 @@ router.put(
   customerAuthentication,
   tryCanEditOrder,
   tryMethodUpdate,
-  async (req, res) => {
-    const success = await updatePaymentInOrder(req.payment, req.order);
-
-    if (success) {
-      res.status(200).json({
-        message: "The payment method has been changed.",
-      });
-    } else {
-      res.status(500).json({
-        error: "Could not change the payment method.",
-      });
-    }
-  }
+  updatePaymentInOrder
 );
 
 /**
@@ -352,19 +255,7 @@ router.put(
   customerAuthentication,
   tryCanEditOrder,
   tryAddressExist,
-  async (req, res) => {
-    const success = await updateAddress(req.address, req.order);
-
-    if (success) {
-      res.status(200).json({
-        message: "The address has been updated.",
-      });
-    } else {
-      res.status(500).json({
-        error: "Could not change the address.",
-      });
-    }
-  }
+  updateAddress
 );
 
 /**
@@ -401,19 +292,7 @@ router.put(
   customerAuthentication,
   tryCanEditOrder,
   tryValidStateCustomer,
-  async (req, res) => {
-    const success = await updateOrderState(req.query.state, req.order);
-
-    if (success) {
-      res.status(200).json({
-        message: "The order's state has been changed.",
-      });
-    } else {
-      res.status(500).json({
-        error: "Could not change the order's state.",
-      });
-    }
-  }
+  updateOrderState
 );
 
 /**
@@ -454,20 +333,8 @@ router.put(
   adminAuthentication,
   tryOrderExist,
   tryValidStateAdmin,
-  async (req, res) => {
-    const success = await updateOrderState(req.query.state, req.order);
-
-    if (success) {
-      res.status(200).json({
-        message: "The order's state has been changed.",
-      });
-    } else {
-      res.status(500).json({
-        error: "Could not change the order's state.",
-      });
-    }
-  }
-);
+  updateOrderState
+  );
 
 /**
  * @swagger

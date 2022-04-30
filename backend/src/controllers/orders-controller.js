@@ -4,35 +4,67 @@ const Payment = require("../models/payment-method");
 const Product = require("../models/product");
 const User = require("../models/user");
 
-exports.addOrder = async (order) => {
+exports.addOrder = async (req, res) => {
+  const order = prepareOrder(req);
+  const newOrder = new Order(order);
+
   try {
-    const newOrder = new Order(order);
-    return await newOrder.save();
+    await newOrder.save();
+
+    res.status(201).json({
+      message: "The order has been added.",
+    });
   } catch (error) {
-    return console.log(error.message);
+    console.log(error.message);
+
+    res.status(500).json({
+      error: "Unable to add order.",
+    });
   }
 };
 
-exports.getOrders = async () => {
+exports.getOrders = async (req, res) => {
   try {
     const admin = true;
-    const orders = await Order.find({}).select({ _id: 0, __v: 0 });
-    return getOrderDitails(orders, admin);
+    let orders = await Order.find({}).select({ _id: 0, __v: 0 });
+    orders = await getOrderDitails(orders, admin);
+
+    res.status(200).json({
+      orders_list: orders,
+    });
   } catch (error) {
-    return console.log(error.message);
+    console.log(error.message);
+
+    res.status(500).json({
+      error: "Could not access orders.",
+    });
   }
 };
 
-exports.getOrdersByUser = async (orders) => {
+exports.getOrdersByUser = async (req, res) => {
+  const orders = req.orders;
+
   try {
     const admin = false;
-    return getOrderDitails(orders, admin);
+    const ordersDetails = await getOrderDitails(orders, admin);
+
+    res.status(200).json({
+      my_orders: ordersDetails,
+    });
   } catch (error) {
-    return console.log(error.message);
+    console.log(error.message);
+
+    res.status(500).json({
+      error: "Could not access this user's orders.",
+    });
   }
 };
 
-exports.addProductToOrder = async (product, quantityToAdd, order) => {
+exports.addProductToOrder = async (req, res) => {
+  const product = req.product;
+  const quantityToAdd = parseInt(req.query.quantity, 10);
+  const order = req.order;
+
   try {
     order.total += quantityToAdd * product.price;
     let hasProduct = false;
@@ -52,67 +84,138 @@ exports.addProductToOrder = async (product, quantityToAdd, order) => {
       order.products.push({ product: product._id, quantity: quantityToAdd });
     }
 
-    return await order.save();
+    await order.save();
+
+    res.status(200).json({
+      message: "The product has been added to the order.",
+    });
   } catch (error) {
-    return console.log(error.message);
+    console.log(error.message);
+
+    res.status(500).json({
+      error: "Could not add the product.",
+    });
   }
 };
 
-exports.removeProductFromOrder = async (product, quantityToRemove, order) => {
+exports.removeProductFromOrder = async (req, res) => {
+  const product = req.product;
+  const quantityToRemove = parseInt(req.query.quantity, 10);
+  const order = req.order;
+
   try {
     const original = order.products.filter(
       (element) =>
         JSON.stringify(element.product) === JSON.stringify(product._id)
     );
+
     const originalQuantity = original[0].quantity;
+    let orderUpdate;
 
     if (originalQuantity < quantityToRemove) {
       throw new Error(
         "You cannot remove a quantity greater than the original quantity."
       );
     } else if (originalQuantity === quantityToRemove) {
-      const orderUpdate = removeAllAmounts(order, quantityToRemove, product);
-      return await orderUpdate.save();
+      orderUpdate = removeAllAmounts(order, quantityToRemove, product);
     } else {
-      const orderUpdate = decreaseAmount(
+      orderUpdate = decreaseAmount(
         order,
         originalQuantity,
         quantityToRemove,
         product
       );
-      return await orderUpdate.save();
     }
+
+    await orderUpdate.save();
+
+    res.status(200).json({
+      message: "The product has been deleted/reduced from the order.",
+    });
   } catch (error) {
-    return console.log(error.message);
+    console.log(error.message);
+
+    res.status(500).json({
+      error: "Could not delete/reduce the product.",
+    });
   }
 };
 
-exports.updatePaymentInOrder = async (payment, order) => {
+exports.updatePaymentInOrder = async (req, res) => {
+  const payment = req.payment;
+  const order = req.order;
+
   try {
     order.payment_method = payment._id;
-    return await order.save();
+    await order.save();
+
+    res.status(200).json({
+      message: "The payment method has been changed.",
+    });
   } catch (error) {
-    return console.log(error.message);
+    console.log(error.message);
+
+    res.status(500).json({
+      error: "Could not change the payment method.",
+    });
   }
 };
 
-exports.updateOrderState = async (state, order) => {
-  try {
-    order.state = state;
-    return await order.save();
-  } catch (error) {
-    return console.log(error.message);
-  }
-};
+exports.updateAddress = async (req, res) => {
+  const address = req.address;
+  const order = req.order;
 
-exports.updateAddress = async (address, order) => {
   try {
     order.address = address._id;
-    return await order.save();
+    await order.save();
+
+    res.status(200).json({
+      message: "The address has been updated.",
+    });
   } catch (error) {
-    return console.log(error.message);
+    console.log(error.message);
+
+    res.status(500).json({
+      error: "Could not change the address.",
+    });
   }
 };
+
+exports.updateOrderState = async (req, res) => {
+  const state = req.query.state;
+  const order = req.order;
+
+  try {
+    order.state = state;
+    await order.save();
+
+    res.status(200).json({
+      message: "The order's state has been changed.",
+    });
+  } catch (error) {
+    console.log(error.message);
+
+    res.status(500).json({
+      error: "Could not change the order's state.",
+    });
+  }
+};
+
+function prepareOrder(req) {
+  return {
+    products: [
+      {
+        product: req.product._id,
+        quantity: req.body.quantity,
+      },
+    ],
+    total: req.product.price * req.body.quantity,
+    address: req.address,
+    payment_method: req.payment,
+    state: req.body.state,
+    owner: req.user._id,
+  };
+}
 
 function removeAllAmounts(order, quantityToRemove, product) {
   order.total -= quantityToRemove * product.price;
