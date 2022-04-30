@@ -38,19 +38,7 @@ const router = express.Router();
  *              description: You need admin privileges to perform this operation.
  */
 
-router.post("/", adminAuthentication, tryValidMethod, async (req, res) => {
-  const success = await addPaymentMethod(req.body.method);
-
-  if (success) {
-    res.status(201).json({
-      message: "The payment method has been added.",
-    });
-  } else {
-    res.status(500).json({
-      error: "Unable to add the payment method.",
-    });
-  }
-});
+router.post("/", adminAuthentication, tryValidMethod, addPaymentMethod);
 
 /**
  * @swagger
@@ -72,19 +60,7 @@ router.post("/", adminAuthentication, tryValidMethod, async (req, res) => {
  *              description:  You need to be authenticate to perform this operation.
  */
 
-router.get("/", userAuthentication, async (req, res) => {
-  const methods = await getPaymentMethods();
-
-  if (methods) {
-    res.status(200).json({
-      payment_methods: methods,
-    });
-  } else {
-    res.status(500).json({
-      error: "Could not access payment methods.",
-    });
-  }
-});
+router.get("/", userAuthentication, getPaymentMethods);
 
 /**
  * @swagger
@@ -118,19 +94,7 @@ router.put(
   adminAuthentication,
   tryMethodUpdate,
   tryValidMethod,
-  async (req, res) => {
-    const success = await updatePaymentMethods(req.params.id, req.body.update);
-
-    if (success) {
-      res.status(200).json({
-        message: "The payment method has been updated.",
-      });
-    } else {
-      res.status(500).json({
-        error: "Could not update the payment method.",
-      });
-    }
-  }
+  updatePaymentMethods
 );
 
 /**
@@ -158,19 +122,7 @@ router.delete(
   "/:id/",
   adminAuthentication,
   tryMethodUpdate,
-  async (req, res) => {
-    const success = await deletePaymentMethods(req.payment);
-
-    if (success) {
-      res.status(200).json({
-        message: "The payment method has been deleted.",
-      });
-    } else {
-      res.status(500).json({
-        error: "Could not delete the payment method.",
-      });
-    }
-  }
+  deletePaymentMethods
 );
 
 /**

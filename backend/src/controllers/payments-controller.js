@@ -1,35 +1,74 @@
 const Payment = require("../models/payment-method");
 
-const addPaymentMethod = async (method) => {
+const addPaymentMethod = async (req, res) => {
+  const method = req.body.method;
+  const newMethod = new Payment({ method });
+
   try {
-    const newMethod = new Payment({ method });
-    return await newMethod.save();
+    await newMethod.save();
+
+    res.status(201).json({
+      message: "The payment method has been added.",
+    });
   } catch (error) {
-    return console.log(error.message);
+    console.log(error.message);
+
+    res.status(500).json({
+      error: "Unable to add the payment method.",
+    });
   }
 };
 
-const getPaymentMethods = async () => {
+const getPaymentMethods = async (req, res) => {
   try {
-    return await Payment.find({}).select({ _id: 0, __v: 0 });
+    const methods = await Payment.find({}).select({ _id: 0, __v: 0 });
+
+    res.status(200).json({
+      payment_methods: methods,
+    });
   } catch (error) {
-    return console.log(error.message);
+    console.log(error.message);
+
+    res.status(500).json({
+      error: "Could not access payment methods.",
+    });
   }
 };
 
-const updatePaymentMethods = async (option, method) => {
+const updatePaymentMethods = async (req, res) => {
+  const option = req.params.id;
+  const update = { method: req.body.method };
+
   try {
-    return await Payment.findOneAndUpdate({ option }, method);
+    await Payment.findOneAndUpdate({ option }, update);
+
+    res.status(200).json({
+      message: "The payment method has been updated.",
+    });
   } catch (error) {
-    return console.log(error.message);
+    console.log(error.message);
+
+    res.status(500).json({
+      error: "Could not update the payment method.",
+    });
   }
 };
 
-const deletePaymentMethods = async (payment) => {
+const deletePaymentMethods = async (req, res) => {
+  const payment = req.payment;
+
   try {
-    return await payment.delete();
+    await payment.delete();
+
+    res.status(200).json({
+      message: "The payment method has been deleted.",
+    });
   } catch (error) {
-    return console.log(error.message);
+    console.log(error.message);
+
+    res.status(500).json({
+      error: "Could not delete the payment method.",
+    });
   }
 };
 
