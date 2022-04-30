@@ -26,12 +26,7 @@ exports.addAddress = async (req, res) => {
   const address = req.body.address;
   const user = req.user;
 
-  const addressInfo = {
-    address,
-    owner: user._id,
-  };
-
-  const newAddress = new Address(addressInfo);
+  const newAddress = new Address(getAddressInfo(address, user));
 
   try {
     await newAddress.save();
@@ -132,18 +127,12 @@ exports.suspendUser = async (req, res) => {
   try {
     user.isActive = !user.isActive;
     user.token = "";
-    const hasOpenOrder = await Order.findOne({ owner: user._id });
 
-    if (hasOpenOrder) {
-      hasOpenOrder.state = "cancelled";
-      await hasOpenOrder.save();
-    }
-
+    await cancelOpenOrder(user);
     await user.save();
-    const state = user.isActive ? "unsuspended." : "suspended.";
 
     res.status(200).json({
-      message: "The user has been " + state,
+      message: "The user has been " + (user.isActive ? "unsuspended." : "suspended."),
     });
   } catch (error) {
     console.log(error.message);
@@ -154,6 +143,22 @@ exports.suspendUser = async (req, res) => {
   }
 };
 
+
+function getAddressInfo(address, user) {
+  return {
+    address,
+    owner: user._id,
+  };
+}
+
+async function cancelOpenOrder(user) {
+  const hasOpenOrder = await Order.findOne({ owner: user._id });
+
+  if (hasOpenOrder) {
+    hasOpenOrder.state = "cancelled";
+    await hasOpenOrder.save();
+  }
+}
 
 function addressBookMessage(addresses, data) {
   if (addresses.length === 0) {
