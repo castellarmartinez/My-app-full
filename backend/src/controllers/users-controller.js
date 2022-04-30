@@ -78,16 +78,8 @@ exports.getAddressList = async (req, res) => {
       __v: 0,
     });
 
-    let data;
-
-    if (addresses.length > 0) {
-      data = addresses;
-    } else {
-      data = "You do not have addresses saved.";
-    }
-
     res.status(200).json({
-      address_list: data,
+      address_list: addressBookMessage(addresses),
     });
   } catch (error) {
     console.log(error.message);
@@ -161,3 +153,13 @@ exports.suspendUser = async (req, res) => {
     });
   }
 };
+
+
+function addressBookMessage(addresses, data) {
+  if (addresses.length === 0) {
+    return "You do not have addresses saved.";
+  } 
+
+  return addresses;
+}
+
