@@ -16,13 +16,16 @@ router.get(
 
 router.get(
   `/auth/${strategyName}/callback`,
-  passport.authenticate("facebook", { failureRedirect: "/failed" }),
+  passport.authenticate(strategyName, {
+    session: false,
+    failureRedirect: "/failed",
+  }),
   (req, res) => {
     console.log(`Peticion get /${strategyName}/callback`);
     const data = req.user;
     console.log("Data");
     console.log(data);
-    const token = "hgjsd8fs6g7s7df67g6sdf43sdg2s3df5sg6s7df7";
+    const token = data.id;
     // Successful authentication, redirect home.
     const urlFront = process.env.URL_FRONT + `/?token=${token}`;
 
