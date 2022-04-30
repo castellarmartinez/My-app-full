@@ -5,11 +5,11 @@ const cacheProducts = async (req, res, next) => {
 
   if (data) {
     const products = JSON.parse(data);
+    
     return res.json({
       products
     });
   } else {
-    console.log("No cache");
     return next();
   }
 };
