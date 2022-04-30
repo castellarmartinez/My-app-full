@@ -49,15 +49,15 @@ router.post("/register", tryValidUser, tryRegisteredUser, async (req, res) => {
   const success = await addUser(req.body);
 
   if (success) {
-    res.status(201).json({
+    return res.status(201).json({
       message:
-        "Congratulations!\nYour account has been successfully" + " created.",
+        "Congratulations! Your account has been successfully created.",
     });
-  } else {
-    res.status(500).json({
-      error: "Your account could not be created.",
-    });
-  }
+  } 
+
+  res.status(500).json({
+    error: "Your account could not be created.",
+  });
 });
 
 /**
@@ -107,14 +107,14 @@ router.post("/logout", tryLogout, async (req, res) => {
   const success = await userLogOut(req.user);
 
   if (success) {
-    res.status(200).json({
+    return res.status(200).json({
       message: "Logged out successfully.",
     });
-  } else {
-    res.status(500).json({
-      error: "Unable to log out.",
-    });
-  }
+  } 
+
+  res.status(500).json({
+    error: "Unable to log out.",
+  });
 });
 
 /**
@@ -145,14 +145,14 @@ router.post(
     const success = await addAddress(req.body.address, req.user);
 
     if (success) {
-      res.status(200).json({
+      return res.status(200).json({
         message: "You have added a new address.",
       });
-    } else {
-      res.status(500).json({
-        error: "Unable to add address.",
-      });
-    }
+    } 
+
+    res.status(500).json({
+      error: "Unable to add address.",
+    });
   }
 );
 
@@ -180,14 +180,14 @@ router.get("/", adminAuthentication, async (req, res) => {
   const users = await getUsers();
 
   if (users) {
-    res.status(200).json({
+    return res.status(200).json({
       users,
     });
-  } else {
-    res.status(500).json({
-      error: "Could not access registered users.",
-    });
   }
+
+  res.status(500).json({
+    error: "Could not access registered users.",
+  });
 });
 
 /**
@@ -214,14 +214,14 @@ router.get("/addressbook", customerAuthentication, async (req, res) => {
   const addresses = await getAddressList(req.user);
 
   if (addresses) {
-    res.status(200).json({
+    return res.status(200).json({
       address_list: addresses,
     });
-  } else {
-    res.status(500).json({
-      error: "Could not access address book.",
-    });
   }
+
+  res.status(500).json({
+    error: "Could not access address book.",
+  });
 });
 
 /**
@@ -248,14 +248,14 @@ router.put("/suspend", adminAuthentication, trySuspend, async (req, res) => {
   const { success, state } = await suspendUser(req.user);
 
   if (success) {
-    res.status(200).json({
+    return res.status(200).json({
       message: "The user has been " + state,
     });
-  } else {
-    res.status(500).json({
-      error: "Could not suspend user.",
-    });
   }
+  
+  res.status(500).json({
+    error: "Could not suspend user.",
+  });
 });
 
 /**
