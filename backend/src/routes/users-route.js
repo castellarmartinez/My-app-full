@@ -45,20 +45,7 @@ const router = express.Router();
  *              description:  Username or email already in use.
  */
 
-router.post("/register", tryValidUser, tryRegisteredUser, async (req, res) => {
-  const success = await addUser(req.body);
-
-  if (success) {
-    return res.status(201).json({
-      message:
-        "Congratulations! Your account has been successfully created.",
-    });
-  } 
-
-  res.status(500).json({
-    error: "Your account could not be created.",
-  });
-});
+router.post("/register", tryValidUser, tryRegisteredUser, addUser);
 
 /**
  * @swagger
@@ -80,14 +67,7 @@ router.post("/register", tryValidUser, tryRegisteredUser, async (req, res) => {
  *              description: User or password is invalid.
  */
 
-router.post("/login", tryLogin, async (req, res) => {
-  const token = await userLogIn(req.user);
-
-  res.status(200).json({
-    message: "You are now logged in. Your token for this session:",
-    token: token,
-  });
-});
+router.post("/login", tryLogin, userLogIn);
 
 /**
  * @swagger
@@ -103,19 +83,7 @@ router.post("/login", tryLogin, async (req, res) => {
  *              description: You need to be logged in.
  */
 
-router.post("/logout", tryLogout, async (req, res) => {
-  const success = await userLogOut(req.user);
-
-  if (success) {
-    return res.status(200).json({
-      message: "Logged out successfully.",
-    });
-  } 
-
-  res.status(500).json({
-    error: "Unable to log out.",
-  });
-});
+router.post("/logout", tryLogout, userLogOut);
 
 /**
  * @swagger
@@ -137,24 +105,7 @@ router.post("/logout", tryLogout, async (req, res) => {
  *              description: Error adding a new address.
  */
 
-router.post(
-  "/address",
-  customerAuthentication,
-  tryValidAddress,
-  async (req, res) => {
-    const success = await addAddress(req.body.address, req.user);
-
-    if (success) {
-      return res.status(200).json({
-        message: "You have added a new address.",
-      });
-    } 
-
-    res.status(500).json({
-      error: "Unable to add address.",
-    });
-  }
-);
+router.post("/address", customerAuthentication, tryValidAddress, addAddress);
 
 /**
  * @swagger
@@ -176,19 +127,7 @@ router.post(
  *              description: You need admin privileges to perform this operation
  */
 
-router.get("/", adminAuthentication, async (req, res) => {
-  const users = await getUsers();
-
-  if (users) {
-    return res.status(200).json({
-      users,
-    });
-  }
-
-  res.status(500).json({
-    error: "Could not access registered users.",
-  });
-});
+router.get("/", adminAuthentication, getUsers);
 
 /**
  * @swagger
@@ -210,19 +149,7 @@ router.get("/", adminAuthentication, async (req, res) => {
  *              description: You need to be logged in to perform this operation.
  */
 
-router.get("/addressbook", customerAuthentication, async (req, res) => {
-  const addresses = await getAddressList(req.user);
-
-  if (addresses) {
-    return res.status(200).json({
-      address_list: addresses,
-    });
-  }
-
-  res.status(500).json({
-    error: "Could not access address book.",
-  });
-});
+router.get("/addressbook", customerAuthentication, getAddressList);
 
 /**
  * @swagger
@@ -244,19 +171,7 @@ router.get("/addressbook", customerAuthentication, async (req, res) => {
  *              description: You need admin privileges to perform this operation.
  */
 
-router.put("/suspend", adminAuthentication, trySuspend, async (req, res) => {
-  const { success, state } = await suspendUser(req.user);
-
-  if (success) {
-    return res.status(200).json({
-      message: "The user has been " + state,
-    });
-  }
-  
-  res.status(500).json({
-    error: "Could not suspend user.",
-  });
-});
+router.put("/suspend", adminAuthentication, trySuspend, suspendUser);
 
 /**
  * @swagger
