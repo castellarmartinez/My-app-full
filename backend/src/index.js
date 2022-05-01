@@ -20,9 +20,9 @@ const app = express();
 app.use(cors());
 app.use(passport.initialize());
 app.use(express.json());
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
 app.use(helmet());
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
 app.use("/users", require("./routes/users-route"));
 app.use("/products", require("./routes/products-route"));
 app.use("/payment", require("./routes/payment-route"));
