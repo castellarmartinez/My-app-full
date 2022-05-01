@@ -32,7 +32,7 @@ app.use(require("./routes/auth"));
 app.use(require("./routes/payments"));
 
 app.listen(port, () => {
-  console.log(`Application is running on: ${port}`);
+  console.log(`Application is running on port: ${port}`);
   console.log(`Enviroment: '${environment}'`);
   console.log(`Description: '${apiDescription}'`);
 });
