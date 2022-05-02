@@ -1,12 +1,83 @@
-.box {
-  padding: 15px;
-  border: solid thin #ddd;
-  border-radius: 3px;
+body {
+  background-image: url("../img/Bandeja_paisa.jpg");
+  background-color: #cccccc;
+  background-blend-mode: overlay;
 }
-.providers {
+
+h1 {
+  font-family: "Lobster";
+  font-size: 48px;
+  color: rgb(189, 182, 82);
+  text-shadow: 3px 3px 3px DimGrey;
   text-align: center;
 }
-.providers .btn {
-  min-width: 200px;
-  margin-bottom: 4px;
+
+li {
+  display: inline;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #111;
+}
+
+form {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+input {
+  height: 1.5rem;
+  background-color: rgba(235, 165, 142, 0.315);
+}
+
+button {
+  background-color: rgb(233, 170, 98);
+  width: 11rem;
+  height: 2rem;
+}
+
+button:hover {
+  background-color: rgb(252, 135, 1);
+  color: rgb(206, 252, 0);
+}
+
+.btn-submit {
+  color: rgb(71, 71, 55);
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: 1.2rem;
+  background-color: rgb(248, 132, 0);
+  box-shadow: .2rem .2rem .2rem black;
+  padding: 0.2rem 0.2rem;
+}
+
+.btn-submit:hover {
+  background-color: rgb(247, 243, 240);
+  box-shadow: 0 0 0 black;
+}
+
+a {
+  text-decoration: none;
 }
