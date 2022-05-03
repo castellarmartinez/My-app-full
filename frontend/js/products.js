@@ -1,7 +1,7 @@
-const host = "localhost:3000";
+const host = "thedelilahresto.tk";
 
 function getUser() {
-  fetch(`http://${host}/products`)
+  fetch(`https://${host}/products`)
     .then((response) => response.json())
     .then((products) => {
       const productInfoContainer = document.getElementById(
