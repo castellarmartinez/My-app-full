@@ -24,8 +24,11 @@
               Products</a>
             </li>
             <li class="users"><a href = "login.html">
-              Users</a>
-            </li>
+               Log in</a>
+             </li>
+             <li class="users"><a href = "signup.html">
+               Sign up</a>
+             </li>
             <li><a href = "about.html">
               About</a></li>
         </ul>
@@ -33,28 +36,17 @@
     </section>
 
     <section id="users-form">
-      <h3>Sign up with email:</h3>
+      <h3>Log in with email:</h3>
       <p id="message"></p>
       <form method="post" id="login_form">
          <div>
-            <p><label>Name:</label><br />
-            <input 
-               type="text"
+            <p><label>Email:</label><br />
+            <input
+               type="email"
                class="form-control"
-               placeholder="Name"
-               name="name"
-               autofocus
-               required="required" /> 
-            </p>
-         </div>
-         <div>
-            <p><label>Username:</label><br />
-            <input 
-               type="text"
-               class="form-control"
-               placeholder="Username"
-               name="username"
-               required="required" /> 
+               placeholder="Email"
+               name="email"
+               required="required"/>
             </p>
          </div>
          <div>
@@ -67,29 +59,19 @@
                required="required"/>
             </p>
          </div>
-         <div>
-            <p><label>Email:</label><br />
-            <input
-               type="email"
-               class="form-control"
-               placeholder="Email"
-               name="email"
-               required="required"/>
-            </p>
-         </div>
          <div class="text-center">
             <p>
-               <button type="submit" class="btn btn-primary">Submit</button>
+               <button type="submit" class="btn btn-primary">Sign in</button>
             </p>
          </div>
       </form>
       <hr>
-      <h3>Or sign up using:</h3>
+      <h3>Or sign in using:</h3>
       <a href="http://localhost:3000/auth/google/" class="btn-submit">Google</a>
       <a href="http://localhost:3000/auth/facebook/" class="btn-submit">Facebook</a>
       <a href="http://localhost:3000/auth/linkedin/" class="btn-submit">LinkedIn</a>
       <a href="http://localhost:3000/auth/github/" class="btn-submit">Github</a>
-      <script type="text/javascript" src="js/script.js"></script>
+      <script type="text/javascript" src="js/login-script.js"></script>
     </section>
   </body>
 </html>
