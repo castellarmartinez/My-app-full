@@ -9,11 +9,11 @@ form.addEventListener("submit", (e) => {
   message.textContent = "";
 
   let formData = new FormData(form);
-   console.log(formData);
   /* Convert data into json */
   let data = Object.fromEntries(formData);
+  data.phone = 3001112222; // Adds number temporally, remove after the database schema is modified
 
-  const url_login = `${base_url}/login`;
+  const url_login = `${base_url}/users/register`;
 
   fetch(url_login, {
     method: "POST",
@@ -22,8 +22,7 @@ form.addEventListener("submit", (e) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       form.reset();
-      message.textContent = data.message;
-    });
+      message.textContent = (data.error ? data.error : data.message)
+    })
 });
