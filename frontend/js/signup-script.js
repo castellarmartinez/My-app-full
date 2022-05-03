@@ -1,6 +1,6 @@
 const base_url = "http://localhost:3000";
 
-const form = document.getElementById('login_form');
+const form = document.getElementById('signup_form');
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="./img/favicon.webp">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap"
+    rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <title>Users</title>
+  </head>
+  <body>
+    <header>
+      <h1>Welcome to Delilah Resto Restaurant<h1>
+    </header>
+
+    <section id = "1">
+      <nav>
+        <ul>
+            <li><a href = "index.html">
+              Home</a></li>
+            <li><a href = "our_products.html">
+              Products</a>
+            </li>
+            <li class="users"><a href = "login.html">
+              Log in</a>
+            </li>
+            <li class="users"><a href = "signup.html">
+              Sign up</a>
+            </li>
+            <li><a href = "about.html">
+              About</a></li>
+        </ul>
+      </nav> 
+    </section>
+
+    <section id="users-form">
+      <h3>Sign up with email:</h3>
+      <p id="message"></p>
+      <form method="post" id="signup_form">
+         <div>
+            <p><label>Name:</label><br />
+            <input 
+               type="text"
+               class="form-control"
+               placeholder="Name"
+               name="name"
+               autofocus
+               required="required" /> 
+            </p>
+         </div>
+         <div>
+            <p><label>Username:</label><br />
+            <input 
+               type="text"
+               class="form-control"
+               placeholder="Username"
+               name="username"
+               required="required" /> 
+            </p>
+         </div>
+         <div>
+            <p><label>Password:</label><br />
+            <input
+               type="password"
+               class="form-control"
+               placeholder="Password"
+               name="password"
+               required="required"/>
+            </p>
+         </div>
+         <div>
+            <p><label>Email:</label><br />
+            <input
+               type="email"
+               class="form-control"
+               placeholder="Email"
+               name="email"
+               required="required"/>
+            </p>
+         </div>
+         <div class="text-center">
+            <p>
+               <button type="submit" class="btn btn-primary">Submit</button>
+            </p>
+         </div>
+      </form>
+      <hr>
+      <h3>Or sign up using:</h3>
+      <a href="http://localhost:3000/auth/google/" class="btn-submit">Google</a>
+      <a href="http://localhost:3000/auth/facebook/" class="btn-submit">Facebook</a>
+      <a href="http://localhost:3000/auth/linkedin/" class="btn-submit">LinkedIn</a>
+      <a href="http://localhost:3000/auth/github/" class="btn-submit">Github</a>
+      <script type="text/javascript" src="js/signup-script.js"></script>
+    </section>
+  </body>
+</html>
