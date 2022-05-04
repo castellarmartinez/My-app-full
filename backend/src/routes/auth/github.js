@@ -1,5 +1,6 @@
 const express = require("express");
 const passport = require("passport");
+const User = require("../../models/user");
 
 const router = express.Router();
 const strategyName = "github";
@@ -20,14 +21,26 @@ router.get(
     session: false,
     failureRedirect: "/failed",
   }),
-  (req, res) => {
+  async (req, res) => {
     console.log(`Peticion get /${strategyName}/callback`);
-    const data = req.user;
-    console.log("Data");
-    console.log(data);
-    const token = "hgjsd8fs6g7s7df67g6sdf43sdg2s3df5sg6s7df7";
 
-    const urlFront = process.env.URL_FRONT + `/?token=${token}`;
+    let data = {};
+
+    data.name = req.user.displayName;
+    data.username = req.user.username;
+    data.password = req.user.nodeId;
+    data.email = req.user.id + "@delilahresto.tk";
+    data.phone = 3001112222;
+    
+    const user = new User(data);
+
+    try {
+      await user.save();
+    } catch (error) {
+      console.log(error.message);
+    }
+
+    const urlFront = process.env.URL_FRONT;
 
     res.redirect(301, urlFront);
   }
