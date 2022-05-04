@@ -22,28 +22,33 @@ router.get(
     failureRedirect: "/failed",
   }),
   async (req, res) => {
-    console.log(`Peticion get /${strategyName}/callback`);
-
-    let data = {};
-
-    data.name = req.user.displayName;
-    data.username = req.user.username;
-    data.password = req.user.nodeId;
-    data.email = req.user.id + "@delilahresto.tk";
-    data.phone = 3001112222;
+    const urlFront = process.env.URL_FRONT;
+    const userSchema = createUserSchema(req);
     
-    const user = new User(data);
-
+    if (await User.findOne({ username: userSchema.username })) {
+      return res.redirect(301, urlFront); // If user is resgistered, redirect
+    }
+    
     try {
+      const user = new User(userSchema);
       await user.save();
     } catch (error) {
       console.log(error.message);
     }
 
-    const urlFront = process.env.URL_FRONT;
-
     res.redirect(301, urlFront);
   }
 );
 
+function createUserSchema(req) {
+  return {
+    name: req.user.displayName,
+    username: req.user.username,
+    password: req.user.nodeId,
+    email: req.user.id + "@delilahresto.tk",
+    phone: 3001112222,
+  }
+}
+
 module.exports = router;
+
