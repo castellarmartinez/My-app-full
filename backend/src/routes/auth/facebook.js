@@ -22,12 +22,10 @@ router.get(
   }),
   (req, res) => {
     console.log(`Peticion get /${strategyName}/callback`);
+    
     const data = req.user;
-    console.log("Data");
-    console.log(data);
-    const token = data.id;
-    // Successful authentication, redirect home.
-    const urlFront = process.env.URL_FRONT + `/?token=${token}`;
+
+    const urlFront = process.env.URL_FRONT;
 
     res.redirect(301, urlFront);
   }
