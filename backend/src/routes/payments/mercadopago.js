@@ -3,7 +3,6 @@ const express = require("express");
 const router = express.Router();
 const mercadopago = require("mercadopago");
 
-// Agrega credenciales
 mercadopago.configure({
   access_token: process.env.MERCADOPAGO_TOKEN,
 });
@@ -21,38 +20,25 @@ router.get("/pending", (req, res) => {
 });
 
 router.post("/pago", function (req, res) {
-  console.log("New request POST to /pago");
-  // TODO: protect this route with a middleware
-
-  // TODO: get user data from the database
   const user = {
-    name: "Andrea",
-    last_name: "Campanella",
-    email: "andrea@campanella.com",
+    name: "Test",
+    email: "test@delilahresto.com",
   };
 
-  // TODO: get items from the database
-  const amount = req.body.amount;
   let items = [
     {
-      title: "iPhone 13 Max PRO",
-      unit_price: 2000,
-      quantity: 5,
-    },
-    {
-      title: "iPad",
-      unit_price: 1200,
-      quantity: 5,
+      title: "Changua",
+      unit_price: 16000,
+      quantity: 1,
     },
   ];
 
-  // Crea un objeto de preferencia
   let preference = {
     auto_return: "approved",
     back_urls: {
-      success: `${process.env.URL_BACK}/mercadopago/success`, // TODO: define this
-      failure: `${process.env.URL_BACK}/mercadopago/failure`, // TODO: define this
-      pending: `${process.env.URL_BACK}/mercadopago/pending`, // TODO: define this
+      success: `${process.env.URL_BACK}/mercadopago/success`,
+      failure: `${process.env.URL_BACK}/mercadopago/failure`,
+      pending: `${process.env.URL_BACK}/mercadopago/pending`,
     },
     payer: {
       name: user.name,
@@ -62,12 +48,9 @@ router.post("/pago", function (req, res) {
     items: items,
   };
 
-  // petición a mercado pago para preparar la compra
   mercadopago.preferences
     .create(preference)
     .then(function (response) {
-      // Ok, haga el proceso de pago con este id:
-      console.log(response);
       let id = response.body.id;
       res.json({ preference_id: id, url: response.body.sandbox_init_point });
     })
