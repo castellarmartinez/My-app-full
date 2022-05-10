@@ -85,3 +85,7 @@ a {
 h4, p {
   font-size: 1.5rem;
 }
+
+#info {
+  text-align: center;
+}
